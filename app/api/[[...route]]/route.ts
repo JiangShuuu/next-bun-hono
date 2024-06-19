@@ -1,10 +1,16 @@
 import { Hono } from 'hono'
-import authors from './authors'
-import books from './books'
+import { handle } from 'hono/vercel'
 
-const app = new Hono()
+import accounts from './accounts'
 
-app.route('/authors', authors)
-app.route('/books', books)
+export const runtime = "edge"
 
-export default app
+const app = new Hono().basePath("/api")
+
+const routes = app
+  .route("/accounts", accounts)
+
+export const GET = handle(app)
+export const POST = handle(app)
+
+export type AppType = typeof routes;

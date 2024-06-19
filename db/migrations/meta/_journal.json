@@ -8,6 +8,13 @@
       "when": 1717902087824,
       "tag": "0000_gray_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1718719014467,
+      "tag": "0001_shiny_paladin",
+      "breakpoints": true
     }
   ]
 }
