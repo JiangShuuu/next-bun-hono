@@ -1,15 +1,24 @@
 import { db } from "@/db/db"
 import { Hono } from  "hono"
 import { accounts } from "@/db/schema"
+import { clerkMiddleware, getAuth } from "@hono/clerk-auth"
+import { eq } from "drizzle-orm"
 
 const app = new Hono()
-  .get("/", async (c) => {
+  .get("/", clerkMiddleware(), async (c) => {
+    const auth = await getAuth(c)
+
+    if (!auth?.userId) {
+      return c.json({error: "Unauthorized"}, 401)
+    }
+
     const data = await db
     .select({
       id: accounts.id,
       name: accounts.name,
     })
     .from(accounts)
+    .where(eq(accounts.userId, auth.userId))
 
     return c.json({ data })
   })
