@@ -8,11 +8,11 @@ import {
 import { AccountForm } from "./account-form";
 import { insertAccountSchema } from "@/db/schema";
 import { z } from "zod";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { useGetAccount } from "../api/use-get-account";
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction";
+import { useGetTransaction } from "../api/use-get-transaction";
 import { Loader2 } from "lucide-react";
-import { useEditAccount } from "@/features/accounts/api/use-edit-account";
-import { useDeleteAccount } from "../api/use-delete-accoun";
+import { useEditTransaction } from "@/features/transactions/api/use-edit-transaction";
+import { useDeleteTransaction } from "../api/use-delete-transaction";
 import { useConfirm } from "@/hooks/use-confirm";
 
 const formSchema = insertAccountSchema.pick({
@@ -21,27 +21,27 @@ const formSchema = insertAccountSchema.pick({
 
 type FormValues = z.input<typeof formSchema>;
 
-export const EditAccountSheet = () => {
-  const { isOpen, onClose, id } = useOpenAccount();
+export const EditTransactionSheet = () => {
+  const { isOpen, onClose, id } = useOpenTransaction();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
     "You are about to delete this transaction"
   );
 
-  const accountQuery = useGetAccount(id);
-  const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const accountQuery = useGetTransaction(id);
+  const editMutation = useEditTransaction(id);
+  const deleteMutation = useDeleteTransaction(id);
 
   const isPending = editMutation.isPending || deleteMutation.isPending;
   const isLoading = accountQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
-    editMutation.mutate(values, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+    // editMutation.mutate(values, {
+    //   onSuccess: () => {
+    //     onClose();
+    //   },
+    // });
   };
 
   const onDelete = async () => {
@@ -56,13 +56,13 @@ export const EditAccountSheet = () => {
     }
   };
 
-  const defaultValues = accountQuery.data
-    ? {
-        name: accountQuery.data.name,
-      }
-    : {
-        name: "",
-      };
+  // const defaultValues = accountQuery.data
+  //   ? {
+  //       name: accountQuery.data.name,
+  //     }
+  //   : {
+  //       name: "",
+  //     };
 
   return (
     <>

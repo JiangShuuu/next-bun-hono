@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/sheet";
 import { useNewCategory } from "@/features/categories/hooks/use-new-category";
 import { AccountForm } from "./account-form";
-import { insertAccountSchema } from "@/db/schema";
+import { insertCategoriesSchema } from "@/db/schema";
 import { z } from "zod";
 import { useCreateCategory } from "@/features/categories/api/use-create-category";
 
-const formSchema = insertAccountSchema.pick({
+const formSchema = insertCategoriesSchema.pick({
   name: true,
 });
 
