@@ -8,11 +8,11 @@ import {
 import { AccountForm } from "./account-form";
 import { insertAccountSchema } from "@/db/schema";
 import { z } from "zod";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { useGetAccount } from "../api/use-get-account";
+import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
+import { useGetCategory } from "../api/use-get-category";
 import { Loader2 } from "lucide-react";
-import { useEditAccount } from "@/features/accounts/api/use-edit-account";
-import { useDeleteAccount } from "../api/use-delete-accoun";
+import { useEditCatrgory } from "@/features/categories/api/use-edit-category";
+import { useDeleteCategory } from "../api/use-delete-category";
 import { useConfirm } from "@/hooks/use-confirm";
 
 const formSchema = insertAccountSchema.pick({
@@ -21,17 +21,17 @@ const formSchema = insertAccountSchema.pick({
 
 type FormValues = z.input<typeof formSchema>;
 
-export const EditAccountSheet = () => {
-  const { isOpen, onClose, id } = useOpenAccount();
+export const EditCategorySheet = () => {
+  const { isOpen, onClose, id } = useOpenCategory();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
     "You are about to delete this transaction"
   );
 
-  const accountQuery = useGetAccount(id);
-  const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const accountQuery = useGetCategory(id);
+  const editMutation = useEditCatrgory(id);
+  const deleteMutation = useDeleteCategory(id);
 
   const isPending = editMutation.isPending || deleteMutation.isPending;
   const isLoading = accountQuery.isLoading;

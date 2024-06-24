@@ -15,6 +15,13 @@
       "when": 1718719014467,
       "tag": "0001_shiny_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1719187089512,
+      "tag": "0002_complete_luke_cage",
+      "breakpoints": true
     }
   ]
 }
