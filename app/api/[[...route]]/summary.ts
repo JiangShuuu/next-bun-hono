@@ -1,6 +1,6 @@
 import { db } from "@/db/db"
 import { accounts, categories, transactions } from "@/db/schema"
-import { calculcatePercentageChange, fillMissingDays } from "@/lib/utils"
+import { calculatePercentageChange, fillMissingDays } from "@/lib/utils"
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth"
 import { zValidator } from "@hono/zod-validator"
 import { subDays, parse, differenceInDays } from "date-fns"
@@ -71,17 +71,17 @@ const app = new Hono()
         lastPeriodEnd
       )
 
-      const incomeChange = calculcatePercentageChange(
+      const incomeChange = calculatePercentageChange(
         currentPeriod.income,
         lastPeriod.income,
       )
 
-      const expensesChange = calculcatePercentageChange(
+      const expensesChange = calculatePercentageChange(
         currentPeriod.expenses,
         lastPeriod.expenses,
       )
 
-      const remainingChange = calculcatePercentageChange(
+      const remainingChange = calculatePercentageChange(
         currentPeriod.remaining,
         lastPeriod.remaining,
       )
