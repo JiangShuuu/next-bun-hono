@@ -1,6 +1,6 @@
 import { db } from "@/db/db"
 import { accounts, categories, transactions } from "@/db/schema"
-import { calculcatePercentageChange } from "@/lib/utils"
+import { calculcatePercentageChange, fillMissingDays } from "@/lib/utils"
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth"
 import { zValidator } from "@hono/zod-validator"
 import { subDays, parse, differenceInDays } from "date-fns"
@@ -67,8 +67,8 @@ const app = new Hono()
       )
       const [lastPeriod] = await fetchFinancialData(
         auth.userId,
-        startDate,
-        endDate
+        lastPeriodStart,
+        lastPeriodEnd
       )
 
       const incomeChange = calculcatePercentageChange(
@@ -77,13 +77,13 @@ const app = new Hono()
       )
 
       const expensesChange = calculcatePercentageChange(
-        currentPeriod.income,
-        lastPeriod.income,
+        currentPeriod.expenses,
+        lastPeriod.expenses,
       )
 
       const remainingChange = calculcatePercentageChange(
-        currentPeriod.income,
-        lastPeriod.income,
+        currentPeriod.remaining,
+        lastPeriod.remaining,
       )
 
       const category = await db
@@ -149,16 +149,23 @@ const app = new Hono()
         .groupBy(transactions.date)
         .orderBy(transactions.date)
 
-
+      const days = fillMissingDays(
+        activeDays,
+        startDate,
+        endDate,
+      )
 
       return c.json({
-        currentPeriod,
-        lastPeriod,
-        incomeChange,
-        expensesChange,
-        remainingChange,
-        finalCatefories,
-        activeDays
+        data: {
+          remainAmout: currentPeriod.remaining,
+          remainingChange,
+          incomeAmount: currentPeriod.income,
+          incomeChange,
+          expensesAmount: currentPeriod.expenses,
+          expensesChange,
+          categories: finalCatefories,
+          days,
+        }
       })
     }
   )
